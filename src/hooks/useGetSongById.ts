@@ -1,14 +1,7 @@
-import { Song } from "../../types";
-
-const useGetSongById = async (id?: string) => {
-
-  if (!id) {
-    return '';
-  }
-  const response = await fetch("http://localhost:4000/songs/5")
-  console.log(response.body)
-
-  return response;
+const UseGetSongById = async (id: number) => {
+  const response = await fetch(`http://localhost:4000/songs/${id}`)
+  const bytesAudio = await response.blob()
+  return bytesAudio;
 };
 
-export default useGetSongById;
+export default UseGetSongById;
