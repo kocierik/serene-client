@@ -28,7 +28,7 @@ const config: Config = {
         "warning": "#fbbd23",
         "error": "#f87272",
       },
-    }, "dark", "cupcake","dracula"],
+    }, "dark", "cupcake","dracula","synthwave"],
   },
   plugins: [require("daisyui")],
 }

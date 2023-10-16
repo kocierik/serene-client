@@ -5,7 +5,7 @@ import {AiOutlinePlus} from 'react-icons/ai'
 
 const Library = () => {
     return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
         <div className="flex items-center justify-between px-5 pt-4">
             <div className="inline-flex items-center gap-x-2">
                 {/*all the weird 'components' are just icons we got from react-icons*/}
