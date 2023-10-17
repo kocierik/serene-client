@@ -1,14 +1,10 @@
 'use client'
 import { Song } from "../../types";
-// import LikeButton from "./LikeButton";
-// import MediaItem from "./MediaItem";
 import {BsPauseFill,BsPlayFill} from 'react-icons/bs'
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
 import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2'
 import Slider from "./Slider";
-// import usePlayer from "@/hooks/usePlayer";
 import { useEffect, useState } from "react";
-import useSound from "use-sound";
 import usePlayer from "@/hooks/usePlayer";
 
 interface Props{
@@ -18,7 +14,6 @@ interface Props{
 const PlayerContent = ({songDescription}: Props) => {
     const player = usePlayer() 
     const [volume, setVolume] = useState(1)
-    const [isPlaying, setIsPlaying] = useState(false)
     const Icon = player.isPlaying ? BsPauseFill : BsPlayFill
     const VolumeIcon = volume===0 ? HiSpeakerXMark:HiSpeakerWave
 
@@ -52,12 +47,11 @@ const PlayerContent = ({songDescription}: Props) => {
 
     const handlePlay = () => {
         if(!player.isPlaying){
-            player.audioSong?.play()
             player.setIsPlaying(true)
         }else{
             player.setIsPlaying(false)
             player.audioSong?.pause()
-        }
+        } 
     }
 
     const toggleMute = () => {
@@ -67,6 +61,11 @@ const PlayerContent = ({songDescription}: Props) => {
             setVolume(0)
         }
     }
+
+    useEffect(()=>{
+        if(player.audioSong)
+            player.audioSong.volume = volume
+    },[player.audioSong, volume])
 
     return (
         <div className="grid grid-cols-2 md:grid-cols-3 h-full ">
