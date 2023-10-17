@@ -34,7 +34,7 @@ export default function Home() {
             }
           </div>
           <div className='sticky bottom-0 bg-base-200  py-2 h-[80px] px-4 '>
-            <PlayerContent  songAudio={player.audioSong}  songDescription={songDescription} />
+            <PlayerContent  songDescription={songDescription} />
           </div>
         </div>
       </main>

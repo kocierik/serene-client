@@ -14,7 +14,6 @@ interface Props {
 }
 
 const SongItem = ({ songInfo, setSongDescription }: Props) => {
-
   const player = usePlayer()
 
   const getSong = async () => {
@@ -29,6 +28,9 @@ const SongItem = ({ songInfo, setSongDescription }: Props) => {
       player.setIsPlaying(true)
       player.setId(songInfo.id)
       audioSong.play()
+    } else if(!player.isPlaying){
+      player.audioSong?.play()
+      player.setIsPlaying(true)
     } else {
       player.audioSong?.pause()
       player.setIsPlaying(false)

@@ -13,15 +13,15 @@ import usePlayer from "@/hooks/usePlayer";
 
 interface Props{
     songDescription: Song | null;
-    songAudio: HTMLAudioElement | null;
 }
 
-const PlayerContent = ({songAudio, songDescription}: Props) => {
+const PlayerContent = ({songDescription}: Props) => {
     const player = usePlayer() 
     const [volume, setVolume] = useState(1)
     const [isPlaying, setIsPlaying] = useState(false)
     const Icon = player.isPlaying ? BsPauseFill : BsPlayFill
     const VolumeIcon = volume===0 ? HiSpeakerXMark:HiSpeakerWave
+
     //play next song
     const onPlayNext = () =>{
         if(player.ids.length===0){
@@ -50,35 +50,13 @@ const PlayerContent = ({songAudio, songDescription}: Props) => {
         player.setId(prevSong) //else play prev song
     }
 
-    // const [play,{pause, sound}] = useSound(songAudio,{
-    //     volume:volume,
-    //     onplay:()=>{setIsPlaying(true); console.log("no")},
-    //     onend:()=>{setIsPlaying(false)}, //stop current song and play next song
-    //     // onend:()=>{setIsPlaying(false), onPlayNext()}, //stop current song and play next song
-    //     onpause:()=>setIsPlaying(false),
-    //     format:['mp3']
-    // })
-
-    // useEffect(()=>{
-    //     sound?.play()
-    //     return () => {
-    //         sound?.unload()
-    //     }
-    // },[sound])
-
-    //clicking the play button
     const handlePlay = () => {
-        if(!isPlaying){
-            songAudio?.play()
-            setIsPlaying(true)
+        if(!player.isPlaying){
+            player.audioSong?.play()
             player.setIsPlaying(true)
-            player.setSong(songAudio!)
-            console.log("avviato")
-            console.log(isPlaying)
         }else{
             player.setIsPlaying(false)
-            setIsPlaying(false)
-            songAudio?.pause()
+            player.audioSong?.pause()
         }
     }
 
