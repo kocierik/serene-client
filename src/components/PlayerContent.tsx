@@ -10,15 +10,17 @@ import usePlayer from "@/hooks/usePlayer";
 import { useEffect, useState } from "react";
 import useSound from "use-sound";
 
-const PlayerContent = () => {
+interface Props{
+    songDescription: Song | null;
+}
+
+const PlayerContent = ({songDescription}: Props) => {
 
     // const player = usePlayer()
     const [volume, setVolume] = useState(1)
     const [isPlaying, setIsPlaying] = useState(false)
-
     const Icon = isPlaying ? BsPauseFill : BsPlayFill
     const VolumeIcon = volume===0 ? HiSpeakerXMark:HiSpeakerWave
-
     // //play next song
     // const onPlayNext = () =>{
     //     if(player.ids.length===0){
@@ -81,10 +83,11 @@ const PlayerContent = () => {
     // }
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-3 h-full">
+        <div className="grid grid-cols-2 md:grid-cols-3 h-full ">
             <div className="flex w-full justify-start">
                 <div className="flex items-center gap-x-4">
-                    {/* <MediaItem data={song}/> */}test
+                    {/* <MediaItem data={song}/> */}
+                    {songDescription?.title}
                     {/* <LikeButton songId={song.id}/> */}
                 </div>
             </div>

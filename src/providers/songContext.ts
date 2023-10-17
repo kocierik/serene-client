@@ -1,3 +1,8 @@
 import { createContext } from "react"
 
-export const songContext = createContext<HTMLAudioElement>(null!);
+interface OnboardingContextValue {
+    song: HTMLAudioElement | null;
+    setSong: React.Dispatch<React.SetStateAction<HTMLAudioElement | null>>;
+  }
+
+export const songContext = createContext<OnboardingContextValue>(null!);

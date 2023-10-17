@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const SelectTheme = () => {
 
-    const [theme, setTheme] = React.useState(localStorage.getItem("theme") || "mytheme");
+  let themeStorage
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    themeStorage = localStorage.getItem('theme')
+  }, [])
+  
+    const [theme, setTheme] = React.useState(themeStorage || "mytheme");
 
     const toggleTheme = (value: string) => {
       setTheme(value);
