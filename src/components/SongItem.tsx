@@ -13,11 +13,9 @@ interface Props {
   setSongDescription: Dispatch<SetStateAction<Song | null>>
 }
 
-
-
 const SongItem = ({ songInfo, setSongDescription }: Props) => {
 
-  const {song, setSong } = useContext(songContext)
+  const {songAudio, setSongAudio } = useContext(songContext)
 
   const getSong = async () => {
 
@@ -25,9 +23,12 @@ const SongItem = ({ songInfo, setSongDescription }: Props) => {
     const value = await UseGetSongById(songInfo.id)
     const objectURL = URL.createObjectURL(value);
     const audioSong = new Audio(objectURL);
-    setSong(audioSong)
+    setSongAudio(audioSong)
     await audioSong.play()
   }
+
+  
+
   
   return (
     <div onClick={async () => { await getSong(); }} className='relative group flex flex-col items-center justify-center rounded-md overflow-hidden gap-x-4 bg-neutral-200/5 cursor-pointer hover:bg-neutral-400/10 transition p-3'>
