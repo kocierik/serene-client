@@ -4,9 +4,9 @@ import { Song } from "../../types"
 import Image from "next/image"
 import PlayButton from "./PlayButton"
 import testImage from "../assets/logo.png"
-import { songContext } from "@/providers/songContext"
 import { Dispatch, SetStateAction, useContext } from "react"
 import UseGetSongById from "@/hooks/useGetSongById"
+import usePlayer from "@/hooks/usePlayer"
 
 interface Props {
   songInfo: Song
@@ -15,21 +15,26 @@ interface Props {
 
 const SongItem = ({ songInfo, setSongDescription }: Props) => {
 
-  const {songAudio, setSongAudio } = useContext(songContext)
+  const player = usePlayer()
 
   const getSong = async () => {
+    if(songInfo.id != player.activeId){
+      player.audioSong?.pause()
 
-    setSongDescription(songInfo)
-    const value = await UseGetSongById(songInfo.id)
-    const objectURL = URL.createObjectURL(value);
-    const audioSong = new Audio(objectURL);
-    setSongAudio(audioSong)
-    await audioSong.play()
+      setSongDescription(songInfo)
+      const value = await UseGetSongById(songInfo.id)
+      const objectURL = URL.createObjectURL(value);
+      const audioSong = new Audio(objectURL);
+      player.setSong(audioSong)
+      player.setIsPlaying(true)
+      player.setId(songInfo.id)
+      audioSong.play()
+    } else {
+      player.audioSong?.pause()
+      player.setIsPlaying(false)
+    }
   }
 
-  
-
-  
   return (
     <div onClick={async () => { await getSong(); }} className='relative group flex flex-col items-center justify-center rounded-md overflow-hidden gap-x-4 bg-neutral-200/5 cursor-pointer hover:bg-neutral-400/10 transition p-3'>
       <div className="relative aspect-square w-full h-full rounded-md overflow-hidden">

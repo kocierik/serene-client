@@ -3,17 +3,16 @@
 import PlayerContent from '@/components/PlayerContent'
 import Sidebar from '@/components/Sidebar'
 import SongItem from '@/components/SongItem'
-import UseGetSongById from '@/hooks/useGetSongById'
 import UseGetSongs from '@/hooks/useGetSongs'
 import { useEffect, useCallback, useState, useContext } from 'react'
 import { Song } from '../../types'
-import { songContext } from '@/providers/songContext'
+import usePlayer from '@/hooks/usePlayer'
 
 export default function Home() {
-  const [songAudio, setSongAudio] = useState<HTMLAudioElement| null>(null)
   const [songDescription,setSongDescription] = useState<Song | null>(null)
   const [allSong, setAllSong] = useState<Song[]>([])
-
+  const player = usePlayer()
+  
   const getAllSongs = useCallback(async () => {
     const value : Song[] = await UseGetSongs()
     setAllSong(value.reverse())
@@ -24,7 +23,6 @@ export default function Home() {
   }, [])
 
   return (
-    <songContext.Provider value={{songAudio, setSongAudio}}>
       <main className="flex min-h-screen	bg-base-300 flex-1  ">
         <Sidebar />
         <div className='w-full'>
@@ -36,10 +34,9 @@ export default function Home() {
             }
           </div>
           <div className='sticky bottom-0 bg-base-200  py-2 h-[80px] px-4 '>
-            <PlayerContent  songAudio={songAudio}  songDescription={songDescription} />
+            <PlayerContent  songAudio={player.audioSong}  songDescription={songDescription} />
           </div>
         </div>
       </main>
-    </songContext.Provider>
   )
 }

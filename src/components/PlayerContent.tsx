@@ -9,6 +9,7 @@ import Slider from "./Slider";
 // import usePlayer from "@/hooks/usePlayer";
 import { useEffect, useState } from "react";
 import useSound from "use-sound";
+import usePlayer from "@/hooks/usePlayer";
 
 interface Props{
     songDescription: Song | null;
@@ -16,65 +17,68 @@ interface Props{
 }
 
 const PlayerContent = ({songAudio, songDescription}: Props) => {
-
-    // const player = usePlayer()
+    const player = usePlayer() 
     const [volume, setVolume] = useState(1)
     const [isPlaying, setIsPlaying] = useState(false)
-    const Icon = isPlaying ? BsPauseFill : BsPlayFill
+    const Icon = player.isPlaying ? BsPauseFill : BsPlayFill
     const VolumeIcon = volume===0 ? HiSpeakerXMark:HiSpeakerWave
-    // //play next song
-    // const onPlayNext = () =>{
-    //     if(player.ids.length===0){
-    //         return
-    //     }
-    //     const currentIndex = player.ids.findIndex((id)=>id===player.activeId) //find current song index in playlist
-    //     const nextSong = player.ids[currentIndex+1] //find next song index in playlist
-
-    //     if(!nextSong){ //if current song is last song go back to start
-    //         return player.setId(player.ids[0])
-    //     }
-    //     player.setId(nextSong) //else play next song
-    // }
-
-    // //play prev song
-    // const onPlayPrev = () =>{ //for going back a song
-    //     if(player.ids.length===0){
-    //         return
-    //     }
-    //     const currentIndex = player.ids.findIndex((id)=>id===player.activeId) //find current song index in playlist
-    //     const prevSong = player.ids[currentIndex-1] //find prev song index in playlist
-
-    //     if(!prevSong){ //if current song is first song go back to end
-    //         return player.setId(player.ids[player.ids.length-1])
-    //     }
-    //     player.setId(prevSong) //else play prev song
-    // }
-
-    const [play,{pause, sound}] = useSound(songAudio,{
-        volume:volume,
-        onplay:()=>{setIsPlaying(true); console.log("no")},
-        onend:()=>{setIsPlaying(false)}, //stop current song and play next song
-        // onend:()=>{setIsPlaying(false), onPlayNext()}, //stop current song and play next song
-        onpause:()=>setIsPlaying(false),
-        format:['mp3']
-    })
-
-    useEffect(()=>{
-        sound?.play()
-        return () => {
-            sound?.unload()
+    //play next song
+    const onPlayNext = () =>{
+        if(player.ids.length===0){
+            return
         }
-    },[sound])
+        const currentIndex = player.ids.findIndex((id)=>id===player.activeId) //find current song index in playlist
+        const nextSong = player.ids[currentIndex+1] //find next song index in playlist
 
+        if(!nextSong){ //if current song is last song go back to start
+            return player.setId(player.ids[0])
+        }
+        player.setId(nextSong) //else play next song
+    }
+
+    //play prev song
+    const onPlayPrev = () =>{ //for going back a song
+        if(player.ids.length===0){
+            return
+        }
+        const currentIndex = player.ids.findIndex((id)=>id===player.activeId) //find current song index in playlist
+        const prevSong = player.ids[currentIndex-1] //find prev song index in playlist
+
+        if(!prevSong){ //if current song is first song go back to end
+            return player.setId(player.ids[player.ids.length-1])
+        }
+        player.setId(prevSong) //else play prev song
+    }
+
+    // const [play,{pause, sound}] = useSound(songAudio,{
+    //     volume:volume,
+    //     onplay:()=>{setIsPlaying(true); console.log("no")},
+    //     onend:()=>{setIsPlaying(false)}, //stop current song and play next song
+    //     // onend:()=>{setIsPlaying(false), onPlayNext()}, //stop current song and play next song
+    //     onpause:()=>setIsPlaying(false),
+    //     format:['mp3']
+    // })
+
+    // useEffect(()=>{
+    //     sound?.play()
+    //     return () => {
+    //         sound?.unload()
+    //     }
+    // },[sound])
 
     //clicking the play button
     const handlePlay = () => {
         if(!isPlaying){
-            play()
+            songAudio?.play()
+            setIsPlaying(true)
+            player.setIsPlaying(true)
+            player.setSong(songAudio!)
             console.log("avviato")
             console.log(isPlaying)
         }else{
-            pause()
+            player.setIsPlaying(false)
+            setIsPlaying(false)
+            songAudio?.pause()
         }
     }
 
@@ -102,11 +106,15 @@ const PlayerContent = ({songAudio, songDescription}: Props) => {
             </div>
             
             <div className="hidden h-full md:flex justify-center items-center w-full max-w-[722px] gap-x-6">
-                <AiFillStepBackward size={30} className='text-neutral-400 cursor-pointer hover:text-white transition'/>
+                <div onClick={onPlayPrev}>
+                <AiFillStepBackward  size={30} className='text-neutral-400 cursor-pointer hover:text-white transition'/>
+                </div>
                 <div onClick={handlePlay} className='flex items-center justify-center h-10 w-10 rounded-full bg-white p-1 cursor-pointer' >
                     <Icon size={30} className='text-black'/>
                 </div>
+                <div onClick={onPlayNext}>
                 <AiFillStepForward size={30} className='text-neutral-400 cursor-pointer hover:text-white transition' />
+                </div>
             </div>
 
             <div className="hidden md:flex w-full justify-end pr-2">
