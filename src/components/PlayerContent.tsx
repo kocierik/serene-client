@@ -4,22 +4,33 @@ import {BsPauseFill,BsPlayFill} from 'react-icons/bs'
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
 import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2'
 import Slider from "./Slider";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import usePlayer from "@/hooks/usePlayer";
+import UseGetSongByArtistTitle from "@/hooks/useGetSongByArtistTitle";
 
 interface Props{
     songDescription: Song | null;
+    allSong: Song[]
+    setSongDescription: Dispatch<SetStateAction<Song | null>>
 }
 
-const PlayerContent = ({songDescription}: Props) => {
+const PlayerContent = ({songDescription, setSongDescription, allSong}: Props) => {
     const player = usePlayer() 
     const [volume, setVolume] = useState(1)
     const Icon = player.isPlaying ? BsPauseFill : BsPlayFill
     const VolumeIcon = volume===0 ? HiSpeakerXMark:HiSpeakerWave
 
     //play next song
-    const onPlayNext = () =>{
-        if(player.ids.length===0){
+    const onPlayNext = async () =>{
+        console.log(player.ids)
+        if(player.ids.length == 0){
+            player.audioSong?.pause()
+            const randomIndexSong = Math.floor(Math.random() * allSong.length);
+            const nextSong = await UseGetSongByArtistTitle(allSong[randomIndexSong].artist+allSong[randomIndexSong].title)
+            player.setSong(nextSong)
+            setSongDescription(allSong[randomIndexSong])
+            player.setId(allSong[randomIndexSong].id)
+            nextSong?.play()
             return
         }
         const currentIndex = player.ids.findIndex((id)=>id===player.activeId) //find current song index in playlist
@@ -77,8 +88,14 @@ const PlayerContent = ({songDescription}: Props) => {
                 </div>
             </div>
             <div className="flex md:hidden col-auto w-full justify-end items-center"> {/*mobile play pause button*/}
-                <div onClick={handlePlay} className='h-10 w-10 flex items-center justify-center rounded-full bg-white p-1 cursor-pointer'>
+                <div onClick={onPlayPrev} className="mr-1">
+                    <AiFillStepBackward  size={30} className='text-neutral-400  cursor-pointer hover:text-white transition'/>
+                </div>
+                <div onClick={handlePlay} className='h-9 w-9 flex items-center justify-center rounded-full bg-white p-1 cursor-pointer'>
                     <Icon size={30} className='text-black'/>
+                </div>
+                <div onClick={onPlayNext} className="ml-1">
+                <AiFillStepForward size={30} className='text-neutral-400 cursor-pointer hover:text-white transition' />
                 </div>
             </div>
             

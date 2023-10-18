@@ -11,7 +11,6 @@ import usePlayer from '@/hooks/usePlayer'
 export default function Home() {
   const [songDescription,setSongDescription] = useState<Song | null>(null)
   const [allSong, setAllSong] = useState<Song[]>([])
-  const player = usePlayer()
   
   const getAllSongs = useCallback(async () => {
     const value : Song[] = await UseGetSongs()
@@ -34,7 +33,7 @@ export default function Home() {
             }
           </div>
           <div className='sticky bottom-0 bg-base-200  py-2 h-[80px] px-4 '>
-            <PlayerContent  songDescription={songDescription} />
+            <PlayerContent allSong={allSong} songDescription={songDescription} setSongDescription={setSongDescription} />
           </div>
         </div>
       </main>
