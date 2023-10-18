@@ -43,17 +43,17 @@ const PlayerContent = ({songDescription, setSongDescription, allSong}: Props) =>
     }
 
     //play prev song
-    const onPlayPrev = () =>{ //for going back a song
+    const onPlayPrev = async () =>{ //for going back a song
         if(player.ids.length===0){
             return
         }
-        const currentIndex = player.ids.findIndex((id)=>id===player.activeId) //find current song index in playlist
-        const prevSong = player.ids[currentIndex-1] //find prev song index in playlist
-
-        if(!prevSong){ //if current song is first song go back to end
-            return player.setId(player.ids[player.ids.length-1])
-        }
-        player.setId(prevSong) //else play prev song
+        player.audioSong?.pause()
+        player.setIsPlaying(false)
+        const prevSong = await UseGetSongByArtistTitle(player.ids[0])
+        prevSong.play()
+        player.setSong(prevSong)
+        player.setIsPlaying(true)
+        player.setIds([player.ids.shift()!])
     }
 
     const handlePlay = () => {

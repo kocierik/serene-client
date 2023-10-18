@@ -6,7 +6,7 @@ import PlayButton from "./PlayButton"
 import testImage from "../assets/logo.png"
 import { Dispatch, SetStateAction } from "react"
 import usePlayer from "@/hooks/usePlayer"
-import UseGetSongByArtistTitle from "@/hooks/useGetSongByArtistTitle"
+import UseGetSongByArtistTitle, { sanitizeInput } from "@/hooks/useGetSongByArtistTitle"
 import SettingButton from "./SettingButton"
 
 interface Props {
@@ -34,6 +34,7 @@ const SongItem = ({ songInfo, setSongDescription }: Props) => {
       player.audioSong?.pause()
       player.setIsPlaying(false)
     }
+    console.log(player.ids)
   }
 
   return (
@@ -46,7 +47,9 @@ const SongItem = ({ songInfo, setSongDescription }: Props) => {
         <p className="text-neutral-400 text-sm pb-4 w-full truncate">{songInfo?.artist}</p>
       </div>
       <div className="absolute bottom-24 right-5 flex flex-col gap-2 justify-center items-center">
-        <SettingButton />
+        <div onClick={()=> player.setIds([...player.ids,sanitizeInput(songInfo.artist+songInfo.title)])}>
+          <SettingButton />
+        </div>
         <PlayButton />
       </div>
     </div>
