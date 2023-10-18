@@ -4,9 +4,9 @@ import { Song } from "../../types"
 import Image from "next/image"
 import PlayButton from "./PlayButton"
 import testImage from "../assets/logo.png"
-import { Dispatch, SetStateAction, useContext } from "react"
-import UseGetSongById from "@/hooks/useGetSongById"
+import { Dispatch, SetStateAction } from "react"
 import usePlayer from "@/hooks/usePlayer"
+import UseGetSongByArtistTitle from "@/hooks/useGetSongByArtistTitle"
 
 interface Props {
   songInfo: Song
@@ -21,7 +21,8 @@ const SongItem = ({ songInfo, setSongDescription }: Props) => {
       player.audioSong?.pause()
 
       setSongDescription(songInfo)
-      const value = await UseGetSongById(songInfo.id)
+      const value = await UseGetSongByArtistTitle(songInfo?.artist+songInfo.title)
+      
       const objectURL = URL.createObjectURL(value);
       const audioSong = new Audio(objectURL);
       player.setSong(audioSong)

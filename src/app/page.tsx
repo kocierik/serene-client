@@ -4,7 +4,7 @@ import PlayerContent from '@/components/PlayerContent'
 import Sidebar from '@/components/Sidebar'
 import SongItem from '@/components/SongItem'
 import UseGetSongs from '@/hooks/useGetSongs'
-import { useEffect, useCallback, useState, useContext } from 'react'
+import { useEffect, useCallback, useState } from 'react'
 import { Song } from '../../types'
 import usePlayer from '@/hooks/usePlayer'
 
