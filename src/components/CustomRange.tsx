@@ -42,7 +42,7 @@ function CustomRange({ value, step, min, max, onChange }: Props) {
             renderThumb={({ props, isDragged }) => (
                 <div
                     {...props}
-                    className={`h-3 w-3 rounded-full bg-white ${!isDragged ? 'opacity-0' : ''} group-hover:opacity-100`}
+                    className={`h-3 w-3 rounded-full bg-primary ${!isDragged ? 'opacity-0' : ''} group-hover:opacity-100`}
                     style={{
                         ...props.style,
                         boxShadow: "0 2px 4px 0 rgb(0 0 0 / 50%)"

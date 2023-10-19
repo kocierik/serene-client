@@ -37,7 +37,7 @@ const SongItem = ({ songInfo, setSongDescription }: Props) => {
   }
 
   return (
-    <div onClick={async () => { await getSong(); }} className='relative group flex flex-col items-center justify-center rounded-md overflow-hidden gap-x-4 bg-neutral-200/5 cursor-pointer hover:bg-neutral-400/10 transition p-3'>
+    <div onClick={async () => { await getSong(); }} className='relative group flex flex-col items-center justify-center rounded-md overflow-hidden gap-x-4 bg-base-300 cursor-pointer hover:bg-neutral-300/10 transition p-3'>
       <div className="relative aspect-square w-full h-full rounded-md overflow-hidden">
         <Image className="object-cover" src={songInfo.picture ? 'data:image/jpeg;base64,' + songInfo.picture :  testImage} alt='cover' fill />
       </div>

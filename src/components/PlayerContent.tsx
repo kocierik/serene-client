@@ -183,7 +183,7 @@ const PlayerContent = ({
           </div>
         </div>
         <div className="flex flex-1 w-full items-center gap-3">
-          <div className="flex text-[0.688rem] text-white text-opacity-70">
+          <div className="flex text-[0.688rem] text-success text-opacity-70">
             {secondsToTime(durationStatus)}
           </div>
             <CustomRange
@@ -197,7 +197,7 @@ const PlayerContent = ({
                 }
               }}
             />
-            <div className="flex text-[0.688rem] text-white text-opacity-70">
+            <div className="flex text-[0.688rem] text-success text-opacity-70">
                 {secondsToTime(songDescription?.duration)}
             </div>
         </div>

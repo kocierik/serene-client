@@ -23,12 +23,12 @@ export default function Home() {
   }, [])
 
   return (
-      <main className="flex min-h-screen flex-col	bg-base-300 flex-1  ">
+      <main className="flex min-h-screen flex-col	bg-base-200 flex-1  ">
         <div className='flex'>
           <div className='flex flex-1'>
             <Sidebar />
           </div>
-          <div className='w-full'>
+          <div className='w-full bg-base-100'>
             <div className="grid p-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-4 mt-4">
               {allSong?.length > 0 &&
                 allSong?.map((songInfo, i) => {
@@ -38,7 +38,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-          <div className='sticky bottom-0 bg-base-200  py-2 h-[80px] px-4 '>
+          <div className='sticky bottom-0 bg-base-100  py-2 h-[80px] px-4 '>
             <PlayerContent allSong={allSong} songDescription={songDescription} setSongDescription={setSongDescription} />
           </div>
       </main>
