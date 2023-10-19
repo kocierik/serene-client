@@ -50,6 +50,7 @@ function CustomRange({ value, step, min, max, onChange }: Props) {
                 />
             )}
         />
+        
     )
 }
 
