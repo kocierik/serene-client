@@ -20,12 +20,12 @@ const SongItem = ({ songInfo, setSongDescription }: Props) => {
   const getSong = async () => {
     if(songInfo.id != player.activeId){
       player.audioSong?.pause()
-
       setSongDescription(songInfo)
-      const audioSong = await UseGetSongByArtistTitle(songInfo?.artist+songInfo.title)
+      const audioSong = await UseGetSongByArtistTitle(songInfo.artist+songInfo.title)
       player.setSong(audioSong)
+      player.setIds([...player.ids,songInfo])
       player.setIsPlaying(true)
-      player.setId(songInfo.id)
+      player.setId(player.ids.length)
       audioSong.play()
     } else if(!player.isPlaying){
       player.audioSong?.play()
@@ -34,7 +34,6 @@ const SongItem = ({ songInfo, setSongDescription }: Props) => {
       player.audioSong?.pause()
       player.setIsPlaying(false)
     }
-    console.log(player.ids)
   }
 
   return (
@@ -47,7 +46,7 @@ const SongItem = ({ songInfo, setSongDescription }: Props) => {
         <p className="text-neutral-400 text-sm pb-4 w-full truncate">{songInfo?.artist}</p>
       </div>
       <div className="absolute bottom-24 right-5 flex flex-col gap-2 justify-center items-center">
-        <div onClick={()=> player.setIds([...player.ids,sanitizeInput(songInfo.artist+songInfo.title)])}>
+        <div>
           <SettingButton />
         </div>
         <PlayButton />

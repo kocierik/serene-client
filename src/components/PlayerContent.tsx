@@ -6,7 +6,8 @@ import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2'
 import Slider from "./Slider";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import usePlayer from "@/hooks/usePlayer";
-import UseGetSongByArtistTitle from "@/hooks/useGetSongByArtistTitle";
+import UseGetSongByArtistTitle, { sanitizeInput } from "@/hooks/useGetSongByArtistTitle";
+import CustomRange from "./CustomRange";
 
 interface Props{
     songDescription: Song | null;
@@ -16,48 +17,49 @@ interface Props{
 
 const PlayerContent = ({songDescription, setSongDescription, allSong}: Props) => {
     const player = usePlayer() 
+    const [durationStatus,setDurationStatus] = useState(0)
     const [volume, setVolume] = useState(1)
     const Icon = player.isPlaying ? BsPauseFill : BsPlayFill
     const VolumeIcon = volume===0 ? HiSpeakerXMark:HiSpeakerWave
 
-    //play next song
     const onPlayNext = async () =>{
-        console.log(player.ids)
-        if(player.ids.length == 0){
-            player.audioSong?.pause()
+        if(player.activeId >= player.ids.length){
             const randomIndexSong = Math.floor(Math.random() * allSong.length);
+            player.audioSong?.pause()
             const nextSong = await UseGetSongByArtistTitle(allSong[randomIndexSong].artist+allSong[randomIndexSong].title)
             player.setSong(nextSong)
             setSongDescription(allSong[randomIndexSong])
-            player.setId(allSong[randomIndexSong].id)
+            player.setIds([...player.ids,allSong[randomIndexSong]])
+            player.setId(player.ids.length)
             nextSong?.play()
-            return
+        } else {
+            player.audioSong?.pause()
+            const nextSong = await UseGetSongByArtistTitle(player.ids[player.activeId+1].artist+player.ids[player.activeId+1].title)
+            player.setSong(nextSong)
+            setSongDescription(player.ids[player.activeId+1])
+            player.setId(player.activeId+1)
+            nextSong?.play()
         }
-        const currentIndex = player.ids.findIndex((id)=>id===player.activeId) //find current song index in playlist
-        const nextSong = player.ids[currentIndex+1] //find next song index in playlist
-
-        if(!nextSong){ //if current song is last song go back to start
-            return player.setId(player.ids[0])
-        }
-        player.setId(nextSong) //else play next song
     }
 
-    //play prev song
-    const onPlayPrev = async () =>{ //for going back a song
-        if(player.ids.length===0){
+    const onPlayPrev = async () =>{ 
+        let index = player.activeId-1
+        console.log(player.ids)
+        if(index < 0){
             return
-        }
+        } 
+        player.setId(index)
         player.audioSong?.pause()
-        player.setIsPlaying(false)
-        const prevSong = await UseGetSongByArtistTitle(player.ids[0])
+        const safeInput = sanitizeInput(player.ids[index].artist+player.ids[index].title)
+        const prevSong = await UseGetSongByArtistTitle(safeInput)
         prevSong.play()
         player.setSong(prevSong)
-        player.setIsPlaying(true)
-        player.setIds([player.ids.shift()!])
+        setSongDescription(player.ids[index])
     }
 
     const handlePlay = () => {
         if(!player.isPlaying){
+            player.audioSong?.play()
             player.setIsPlaying(true)
         }else{
             player.setIsPlaying(false)
@@ -74,16 +76,29 @@ const PlayerContent = ({songDescription, setSongDescription, allSong}: Props) =>
     }
 
     useEffect(()=>{
-        if(player.audioSong)
+        if(player.audioSong){
             player.audioSong.volume = volume
+        }
     },[player.audioSong, volume])
+
+    useEffect(() => {
+        const updateProgressBar = () => {
+          if (player.audioSong && player.isPlaying) {
+            setDurationStatus(player.audioSong.currentTime);
+          }
+        };
+        const progressBarInterval = setInterval(updateProgressBar, 1000);
+        return () => {
+          clearInterval(progressBarInterval);
+        };
+      }, [player.audioSong, player.isPlaying]);
 
     return (
         <div className="grid grid-cols-2 md:grid-cols-3 h-full ">
             <div className="flex w-full justify-start">
                 <div className="flex items-center gap-x-4">
                     {/* <MediaItem data={song}/> */}
-                    {songDescription?.title}
+                    { songDescription?.title}
                     {/* <LikeButton songId={song.id}/> */}
                 </div>
             </div>
@@ -109,6 +124,17 @@ const PlayerContent = ({songDescription, setSongDescription, allSong}: Props) =>
                 <div onClick={onPlayNext}>
                 <AiFillStepForward size={30} className='text-neutral-400 cursor-pointer hover:text-white transition' />
                 </div>
+                <CustomRange
+                        step={0.1}
+                        min={0}
+                        max={songDescription?.duration || 1}
+                        value={durationStatus}
+                        onChange={(value: number) => {
+                            if(player.audioSong){
+                                player.audioSong.currentTime = value;
+                            }
+                        }}
+                    />
             </div>
 
             <div className="hidden md:flex w-full justify-end pr-2">
