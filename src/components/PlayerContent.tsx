@@ -138,6 +138,26 @@ const PlayerContent = ({
               className="text-neutral-400 cursor-pointer hover:text-white transition"
             />
           </div>
+          
+        </div>
+        <div className="flex flex-1 w-full items-center gap-3">
+          <div className="flex text-[0.688rem] text-white text-opacity-70">
+            {secondsToTime(durationStatus)}
+          </div>
+            <CustomRange
+              step={0.1}
+              min={0}
+              max={songDescription?.duration || 1}
+              value={durationStatus}
+              onChange={(value: number) => {
+                if (player.audioSong) {
+                  player.audioSong.currentTime = value;
+                }
+              }}
+            />
+            <div className="flex text-[0.688rem] text-white text-opacity-70">
+                {secondsToTime(songDescription?.duration)}
+            </div>
         </div>
       </div>
 
