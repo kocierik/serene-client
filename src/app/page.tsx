@@ -7,6 +7,7 @@ import UseGetSongs from '@/hooks/useGetSongs'
 import { useEffect, useCallback, useState } from 'react'
 import { Song } from '../../types'
 import usePlayer from '@/hooks/usePlayer'
+import CommandMenu from '@/components/SearchMenu'
 
 export default function Home() {
   const [songDescription,setSongDescription] = useState<Song | null>(null)
@@ -24,7 +25,9 @@ export default function Home() {
 
   return (
       <main className="flex min-h-screen flex-col	bg-base-200 flex-1  ">
+        
         <div className='flex'>
+        <CommandMenu />
           <div className='flex flex-1'>
             <Sidebar />
           </div>
@@ -38,6 +41,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+
           <div className='sticky bottom-0 bg-base-100  py-2 h-[80px] px-4 '>
             <PlayerContent allSong={allSong} songDescription={songDescription} setSongDescription={setSongDescription} />
           </div>
