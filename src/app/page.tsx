@@ -27,7 +27,7 @@ export default function Home() {
       <main className="flex min-h-screen flex-col	bg-base-200 flex-1  ">
         
         <div className='flex'>
-        <CommandMenu />
+        <CommandMenu allSong={allSong}/>
           <div className='flex flex-1'>
             <Sidebar />
           </div>
