@@ -10,10 +10,11 @@ interface Props {
     allSong: Song[]
     setSongDescription: Dispatch<SetStateAction<Song | null>>
     songInfo: Song
+    setMenuOpen: Dispatch<SetStateAction<boolean>>
+    menuOpen: boolean
 }
 
-const SearchMenu = ({ allSong, setSongDescription, songInfo }: Props) => {
-  const [open, setOpen] = useState(false)
+const SearchMenu = ({ allSong, setSongDescription, songInfo, setMenuOpen, menuOpen }: Props) => {
   const [search, setSearch] = useState('')
   const player = usePlayer()
 
@@ -21,11 +22,11 @@ const SearchMenu = ({ allSong, setSongDescription, songInfo }: Props) => {
     const down = (e: { key: string; metaKey: any; ctrlKey: any; preventDefault: () => void }) => {
       if (e.key === 'm' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
-        setOpen((open) => !open)
+        setMenuOpen((menuOpen) => !menuOpen)
       } else if (e.key === 'Enter') {
         e.preventDefault()
         player.audioSong?.pause()
-        setOpen(false)
+        setMenuOpen(false)
       }
     }
     document.addEventListener('keydown', down)
@@ -34,7 +35,7 @@ const SearchMenu = ({ allSong, setSongDescription, songInfo }: Props) => {
   
 
   return (
-    <Command.Dialog value={search} onValueChange={setSearch} className={styles.cmdk} open={open} onOpenChange={setOpen} label="Global Command Menu">
+    <Command.Dialog value={search} onValueChange={setSearch} className={styles.cmdk} open={menuOpen} onOpenChange={setMenuOpen} label="Global Command Menu">
       <Command.Input  style={{ borderRadius: "10px" }} />
       <Command.List>
         <Command.Empty>No results found.</Command.Empty>
@@ -45,7 +46,7 @@ const SearchMenu = ({ allSong, setSongDescription, songInfo }: Props) => {
               {/* <div onClick={async () => await getSong(song)}>
                 {song.artist} {song.title}
               </div> */}
-              <ItemList setSongDescription={setSongDescription} song={song} setOpen={setOpen}/>
+              <ItemList setSongDescription={setSongDescription} song={song} setMenuOpen={setMenuOpen}/>
             </Command.Item>
           ))}
           <Command.Separator />

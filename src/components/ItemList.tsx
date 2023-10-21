@@ -6,10 +6,10 @@ import usePlayer from '@/hooks/usePlayer'
 interface Props{
     song: Song
     setSongDescription: React.Dispatch<React.SetStateAction<Song | null>>
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>
 } 
 
-const ItemList = ({song, setSongDescription, setOpen}: Props) => {
+const ItemList = ({song, setSongDescription, setMenuOpen}: Props) => {
     const player = usePlayer()
 
     const getSong = async (song: Song) => {
@@ -22,7 +22,7 @@ const ItemList = ({song, setSongDescription, setOpen}: Props) => {
           player.setIsPlaying(true)
           player.setId(player.ids.length)
           audioSong.play()
-          setOpen(false)
+          setMenuOpen(false)
         }
       }
       const handleKeyPress = async (event: React.KeyboardEvent<HTMLDivElement>) => {

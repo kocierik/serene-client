@@ -11,6 +11,7 @@ import SearchMenu from '@/components/SearchMenu'
 export default function Home() {
   const [songDescription,setSongDescription] = useState<Song | null>(null)
   const [allSong, setAllSong] = useState<Song[]>([])
+  const [menuOpen, setMenuOpen] = useState(false)
   
   const getAllSongs = useCallback(async () => {
     const value : Song[] = await UseGetSongs()
@@ -26,9 +27,9 @@ export default function Home() {
       <main className="flex min-h-screen flex-col	bg-base-200 flex-1  ">
         
         <div className='flex'>
-        <SearchMenu allSong={allSong} setSongDescription={setSongDescription} songInfo={songDescription!}/>
+        <SearchMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} allSong={allSong} setSongDescription={setSongDescription} songInfo={songDescription!}/>
           <div className='flex flex-1'>
-            <Sidebar />
+            <Sidebar setMenuOpen={setMenuOpen}/>
           </div>
           <div className='w-full bg-base-100'>
             <div className="grid p-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-4 mt-4">

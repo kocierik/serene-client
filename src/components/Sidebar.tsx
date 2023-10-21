@@ -1,5 +1,5 @@
 'use client'
-import React, { useMemo } from 'react'
+import React, { Dispatch, SetStateAction, useMemo } from 'react'
 import { usePathname } from 'next/navigation'
 import { HiHome } from 'react-icons/hi'
 import { BiSearch } from 'react-icons/bi'
@@ -8,8 +8,10 @@ import SidebarItem from './SidebarItem'
 import Library from './Library'
 import SelectTheme from './selectTheme'
 
-
-const Sidebar = () => {
+interface Props {
+  setMenuOpen: Dispatch<SetStateAction<boolean>>
+}
+const Sidebar = ({setMenuOpen}: Props) => {
   const pathname = usePathname();
   const routes = useMemo(() => [
     {
@@ -21,7 +23,8 @@ const Sidebar = () => {
       icon: BiSearch,
       label: 'Search',
       active: pathname === '/search',
-      href: '/search'
+      href: '',
+      onClick: ()=>{setMenuOpen(true)}
     }
   ], [pathname])
 
