@@ -6,8 +6,7 @@ import SongItem from '@/components/SongItem'
 import UseGetSongs from '@/hooks/useGetSongs'
 import { useEffect, useCallback, useState } from 'react'
 import { Song } from '../../types'
-import usePlayer from '@/hooks/usePlayer'
-import CommandMenu from '@/components/SearchMenu'
+import SearchMenu from '@/components/SearchMenu'
 
 export default function Home() {
   const [songDescription,setSongDescription] = useState<Song | null>(null)
@@ -27,7 +26,7 @@ export default function Home() {
       <main className="flex min-h-screen flex-col	bg-base-200 flex-1  ">
         
         <div className='flex'>
-        <CommandMenu allSong={allSong}/>
+        <SearchMenu allSong={allSong} setSongDescription={setSongDescription} songInfo={songDescription!}/>
           <div className='flex flex-1'>
             <Sidebar />
           </div>
