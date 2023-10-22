@@ -7,6 +7,8 @@ import UseGetSongs from '@/hooks/useGetSongs'
 import { useEffect, useCallback, useState } from 'react'
 import { Song } from '../../types'
 import SearchMenu from '@/components/SearchMenu'
+import SidebarItem from '@/components/SidebarItem'
+import { BiSearch } from 'react-icons/bi'
 
 export default function Home() {
   const [songDescription,setSongDescription] = useState<Song | null>(null)
@@ -23,10 +25,21 @@ export default function Home() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const item = {
+    icon: BiSearch,
+    label: 'Search',
+    active: false,
+    href: '',
+    onClick: ()=>{setMenuOpen(true)}
+  }
+
   return (
       <main className="flex min-h-screen flex-col	bg-base-200 flex-1  ">
         
-        <div className='flex'>
+        <div className='flex md:flex-row  flex-col '>
+          <div className='md:hidden md:flex sm:flex-col p-2 m-1'>
+            <SidebarItem {...item} />
+        </div> 
         <SearchMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} allSong={allSong} setSongDescription={setSongDescription} songInfo={songDescription!}/>
           <div className='flex flex-1'>
             <Sidebar setMenuOpen={setMenuOpen}/>
