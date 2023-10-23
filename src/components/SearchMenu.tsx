@@ -33,7 +33,7 @@ const SearchMenu = ({ ytSearch, setYtSearch, allSong, setSongDescription, setMen
     }
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
-  }, [allSong, player.audioSong])
+  }, [allSong, player.audioSong, setMenuOpen])
 
   const findYtSong = async (query: string) =>{
     const response = await fetch(`http://localhost:4000/search?query=${query}`)
