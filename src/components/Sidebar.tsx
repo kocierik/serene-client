@@ -26,7 +26,7 @@ const Sidebar = ({setMenuOpen}: Props) => {
       href: '',
       onClick: ()=>{setMenuOpen(true)}
     }
-  ], [pathname])
+  ], [pathname, setMenuOpen])
 
 
 

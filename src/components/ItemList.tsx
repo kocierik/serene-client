@@ -25,6 +25,7 @@ const ItemList = ({song, setSongDescription, setMenuOpen}: Props) => {
           setMenuOpen(false)
         }
       }
+      
       const handleKeyPress = async (event: React.KeyboardEvent<HTMLDivElement>) => {
         if (event.key === 'Enter') {
           await getSong(song);
@@ -34,7 +35,7 @@ const ItemList = ({song, setSongDescription, setMenuOpen}: Props) => {
     return (
     <div onKeyDown={handleKeyPress} tabIndex={0} onClick={async () => await getSong(song)}>
         {song.artist} {song.title}
-  </div>
+    </div>
   )
 }
 
