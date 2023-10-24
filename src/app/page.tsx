@@ -9,17 +9,18 @@ import { Song } from '../../types'
 import SearchMenu from '@/components/SearchMenu'
 import SidebarItem from '@/components/SidebarItem'
 import { BiHome, BiSearch } from 'react-icons/bi'
-
+import UseDownloadSong from '@/hooks/useDownloadSong'
 
 export interface IYouTubeVideo {
   id: {
     videoId: string;
   }
   snippet: {
-  publishedAt: string;
-  channelId: string;
-  title: string;
-  description: string;
+    publishedAt: string;
+    channelId: string;
+    title: string;
+    description: string;
+    duration: number;
   thumbnails: {
       default: {
           url: string;
@@ -54,18 +55,10 @@ export default function Home() {
   useEffect(() => {
     getAllSongs()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [UseDownloadSong,songDescription])
   
   const [ytSearch,setYtSearch] = useState<Song[] | undefined>([])
   
-  // const item = 
-  //   {
-  //     icon: BiSearch,
-  //     label: 'Search',
-  //     active: false,
-  //     href: '',
-  //     onClick: ()=>{setMenuOpen(true)}
-  //   }
     const items = useMemo(() => [
       {
         icon: BiHome,
@@ -81,10 +74,6 @@ export default function Home() {
       onClick: ()=>{setMenuOpen(true)}
       }
     ], [])
-
-  
-
-
 
   return (
       <main className="flex min-h-screen flex-col	bg-base-200 flex-1">
@@ -103,10 +92,10 @@ export default function Home() {
             <div className="grid p-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-4 mt-4">
               {(ytSearch?.length == 0) ?
                 allSong?.map((songInfo, i) => {
-                  return <SongItem songInfo={songInfo} setSongDescription={setSongDescription}  key={i} />
+                  return <SongItem fromYt={false} songInfo={songInfo} setSongDescription={setSongDescription}  key={i} />
                 }) :
                 ytSearch?.map((item,i) =>{
-                  return <SongItem songInfo={item} setSongDescription={setSongDescription}  key={i} />
+                  return <SongItem fromYt={true} songInfo={item} setSongDescription={setSongDescription}  key={i} />
                 })
               }
             </div>

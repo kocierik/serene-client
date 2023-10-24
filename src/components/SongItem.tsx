@@ -3,25 +3,27 @@
 import { Song } from "../../types"
 import Image from "next/image"
 import PlayButton from "./PlayButton"
-import testImage from "../assets/logo.png"
 import { Dispatch, SetStateAction } from "react"
 import usePlayer from "@/hooks/usePlayer"
 import UseGetSongByArtistTitle, { sanitizeInput } from "@/hooks/useGetSongByArtistTitle"
 import SettingButton from "./SettingButton"
+import UseDownloadSong from "@/hooks/useDownloadSong"
 
 interface Props {
   songInfo: Song
   setSongDescription: Dispatch<SetStateAction<Song | null>>
+  fromYt: boolean
 }
 
-const SongItem = ({ songInfo, setSongDescription }: Props) => {
+const SongItem = ({ songInfo, setSongDescription, fromYt }: Props) => {
   const player = usePlayer()
 
   const getSong = async () => {
     if(songInfo.id != player.activeId){
       player.audioSong?.pause()
       setSongDescription(songInfo)
-      const audioSong = await UseGetSongByArtistTitle(songInfo.artist+songInfo.title)
+      // const audioSong = await UseGetSongByArtistTitle(songInfo.artist+songInfo.title)
+      const audioSong = await UseGetSongByArtistTitle(songInfo.title)
       player.setSong(audioSong)
       player.setIds([...player.ids,songInfo])
       player.setIsPlaying(true)
@@ -36,8 +38,13 @@ const SongItem = ({ songInfo, setSongDescription }: Props) => {
     }
   }
 
+  const downloadSong = async (url: string) =>{
+    const result = await UseDownloadSong(url)
+    console.log(result)    
+  }
+
   return (
-    <div onClick={async () => { await getSong(); }} className='relative group flex flex-col items-center justify-center rounded-md overflow-hidden gap-x-4 bg-base-300 cursor-pointer hover:bg-neutral-300/10 transition p-3'>
+    <div onClick={async () => { if(fromYt) await downloadSong(songInfo.path!);  await getSong(); }} className='relative group flex flex-col items-center justify-center rounded-md overflow-hidden gap-x-4 bg-base-300 cursor-pointer hover:bg-neutral-300/10 transition p-3'>
       <div className="relative aspect-square w-full h-full rounded-md overflow-hidden">
         <Image className="object-cover" src={songInfo.picture?.length! > 100 ? 'data:image/jpeg;base64,' + songInfo.picture :  songInfo.picture!} alt='cover' fill />
       </div>

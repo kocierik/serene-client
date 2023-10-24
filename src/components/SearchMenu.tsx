@@ -45,7 +45,8 @@ const SearchMenu = ({ ytSearch, setYtSearch, allSong, setSongDescription, setMen
         path: item.id.videoId,
         artist: query,
         picture: item.snippet.thumbnails.medium.url,
-        title: item.snippet.title
+        title: item.snippet.title,
+        duration: item.snippet.duration
       }
       searchVideoResult.push(value)
     })

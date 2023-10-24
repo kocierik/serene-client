@@ -28,7 +28,7 @@ const PlayerContent = ({
   const [volume, setVolume] = useState(1);
   const Icon = player.isPlaying ? BsPauseFill : BsPlayFill;
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
-
+  
   const onPlayNext = async () => {
     if (player.activeId >= player.ids.length) {
       const randomIndexSong = Math.floor(Math.random() * allSong.length);
@@ -147,7 +147,7 @@ const PlayerContent = ({
             <CustomRange
               step={0.1}
               min={0}
-              max={songDescription?.duration || 1}
+              max={1}
               value={durationStatus}
               onChange={(value: number) => {
                 if (player.audioSong) {
