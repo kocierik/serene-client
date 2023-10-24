@@ -7,18 +7,21 @@ import Box from './Box'
 import SidebarItem from './SidebarItem'
 import Library from './Library'
 import SelectTheme from './selectTheme'
+import { Song } from '../../types'
 
 interface Props {
   setMenuOpen: Dispatch<SetStateAction<boolean>>
+  setYtSearch: Dispatch<SetStateAction<Song[] | undefined>>
 }
-const Sidebar = ({setMenuOpen}: Props) => {
+const Sidebar = ({setMenuOpen,setYtSearch}: Props) => {
   const pathname = usePathname();
   const routes = useMemo(() => [
     {
       icon: HiHome,
       label: 'Home',
       active: pathname !== '/search',
-      href: '/'
+      href: '/',
+      onClick: ()=>{setYtSearch([])}
     }, {
       icon: BiSearch,
       label: 'Search',
@@ -26,7 +29,7 @@ const Sidebar = ({setMenuOpen}: Props) => {
       href: '',
       onClick: ()=>{setMenuOpen(true)}
     }
-  ], [pathname, setMenuOpen])
+  ], [pathname, setMenuOpen, setYtSearch])
 
 
 

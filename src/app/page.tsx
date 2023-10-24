@@ -85,7 +85,7 @@ export default function Home() {
           </div> 
         <SearchMenu ytSearch={ytSearch!} setYtSearch={setYtSearch} menuOpen={menuOpen} setMenuOpen={setMenuOpen} allSong={allSong} setSongDescription={setSongDescription} />
           <div className='flex flex-1'>
-            <Sidebar setMenuOpen={setMenuOpen}/>
+            <Sidebar setMenuOpen={setMenuOpen} setYtSearch={setYtSearch}/>
           </div>
           
           <div className='w-full bg-base-100'>

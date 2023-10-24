@@ -6,6 +6,7 @@ import { FaMusic } from 'react-icons/fa'
 import usePlayer from '@/hooks/usePlayer'
 import ItemList from './ItemList'
 import { IYouTubeVideo } from '@/app/page'
+import UseGetSongByArtistTitle from '@/hooks/useGetSongByArtistTitle'
 
 interface Props {
     allSong: Song[]
@@ -25,14 +26,12 @@ const SearchMenu = ({ ytSearch, setYtSearch, allSong, setSongDescription, setMen
       if ((e.key === 'm' && (e.metaKey || e.ctrlKey)) || e.key === 'Escape' ) {
         e.preventDefault()
         setMenuOpen((menuOpen) => !menuOpen)
-      } else if (e.key === 'Enter') {
-        e.preventDefault()
-        player.audioSong?.pause()
-        setMenuOpen(false)
-      }
+      } 
     }
     document.addEventListener('keydown', down)
-    return () => document.removeEventListener('keydown', down)
+    return () => {
+      document.removeEventListener('keydown', down)
+    }
   }, [allSong, player.audioSong, setMenuOpen])
 
   const findYtSong = async (query: string) =>{
@@ -53,21 +52,31 @@ const SearchMenu = ({ ytSearch, setYtSearch, allSong, setSongDescription, setMen
     setYtSearch(searchVideoResult)
     setMenuOpen(false)
   }
+  const getSong = async (song: Song) => {
+    if (song.id !== player.activeId) {
+      player.audioSong?.pause()
+      setSongDescription(song)
+      const audioSong = await UseGetSongByArtistTitle(song.title)
+      player.setSong(audioSong)
+      player.setIds([...player.ids, song])
+      player.setIsPlaying(true)
+      player.setId(player.ids.length)
+      audioSong.play()
+      setMenuOpen(false)
+    }
+  }
 
   return (
-    <Command.Dialog  className={styles.cmdk} open={menuOpen} onOpenChange={setMenuOpen} label="Global Command Menu">
+    <Command.Dialog loop  className={styles.cmdk} open={menuOpen} onOpenChange={setMenuOpen} label="Global Command Menu">
       <Command.Input value={search} onValueChange={setSearch}  style={{ borderRadius: "10px" }} />
       <Command.List>
         <Command.Empty>No results found.</Command.Empty>
         <div className='btn hover:bg-base-100 ml-2 mt-1' tabIndex={0} onClick={async () =>await findYtSong(encodeURIComponent(search.replaceAll(' ', '_')))}> Search on Youtube</div>
         <Command.Group heading="Music">
           {allSong.map((song, i) => (
-            <Command.Item key={i} >
+            <Command.Item key={i} onSelect={async () => await getSong(song)}>
               <FaMusic />
-              {/* <div onClick={async () => await getSong(song)}>
                 {song.artist} {song.title}
-              </div> */}
-              <ItemList setSongDescription={setSongDescription} song={song} setMenuOpen={setMenuOpen}/>
             </Command.Item>
           ))}
           <Command.Separator />

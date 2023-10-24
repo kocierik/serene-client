@@ -13,18 +13,18 @@ const ItemList = ({song, setSongDescription, setMenuOpen}: Props) => {
     const player = usePlayer()
 
     const getSong = async (song: Song) => {
-        if (song.id !== player.activeId) {
-          player.audioSong?.pause()
-          setSongDescription(song)
-          const audioSong = await UseGetSongByArtistTitle(song.artist + song.title)
-          player.setSong(audioSong)
-          player.setIds([...player.ids, song])
-          player.setIsPlaying(true)
-          player.setId(player.ids.length)
-          audioSong.play()
-          setMenuOpen(false)
-        }
+      if (song.id !== player.activeId) {
+        player.audioSong?.pause()
+        setSongDescription(song)
+        const audioSong = await UseGetSongByArtistTitle(song.artist + song.title)
+        player.setSong(audioSong)
+        player.setIds([...player.ids, song])
+        player.setIsPlaying(true)
+        player.setId(player.ids.length)
+        audioSong.play()
+        setMenuOpen(false)
       }
+    }
       
       const handleKeyPress = async (event: React.KeyboardEvent<HTMLDivElement>) => {
         if (event.key === 'Enter') {
