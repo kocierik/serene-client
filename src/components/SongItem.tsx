@@ -42,7 +42,6 @@ const SongItem = ({ songInfo, setSongDescription, fromYt }: Props) => {
   const downloadSong = async (url: string) =>{
     setIsLoading(true)
     const result = await UseDownloadSong(url)
-    console.log(result)    
   }
 
   return (

@@ -39,7 +39,6 @@ const SearchMenu = ({ ytSearch, setYtSearch, allSong, setSongDescription, setMen
     const results: IYouTubeVideo[] = (await response.json()).items
     let searchVideoResult : Song[] = []
     results.map(item => {
-      console.log(item)
       const value : Song = {
         path: item.id.videoId,
         artist: query,

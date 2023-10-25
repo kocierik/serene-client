@@ -56,7 +56,6 @@ const PlayerContent = ({
 
   const onPlayPrev = async () => {
     let index = player.activeId - 1;
-    console.log(player.ids);
     if (index < 0) {
       return;
     }
