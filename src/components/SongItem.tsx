@@ -3,7 +3,7 @@
 import { Song } from "../../types"
 import Image from "next/image"
 import PlayButton from "./PlayButton"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import usePlayer from "@/hooks/usePlayer"
 import UseGetSongByArtistTitle, { sanitizeInput } from "@/hooks/useGetSongByArtistTitle"
 import SettingButton from "./SettingButton"
@@ -17,12 +17,12 @@ interface Props {
 
 const SongItem = ({ songInfo, setSongDescription, fromYt }: Props) => {
   const player = usePlayer()
+  const [isLoading,setIsLoading] = useState(false)
 
   const getSong = async () => {
     if(songInfo.id != player.activeId){
       player.audioSong?.pause()
       setSongDescription(songInfo)
-      // const audioSong = await UseGetSongByArtistTitle(songInfo.artist+songInfo.title)
       const audioSong = await UseGetSongByArtistTitle(songInfo.title)
       player.setSong(audioSong)
       player.setIds([...player.ids,songInfo])
@@ -36,17 +36,20 @@ const SongItem = ({ songInfo, setSongDescription, fromYt }: Props) => {
       player.audioSong?.pause()
       player.setIsPlaying(false)
     }
+    setIsLoading(false)
   }
 
   const downloadSong = async (url: string) =>{
+    setIsLoading(true)
     const result = await UseDownloadSong(url)
     console.log(result)    
   }
 
   return (
     <div onClick={async () => { if(fromYt) await downloadSong(songInfo.path!);  await getSong(); }} className='relative group flex flex-col items-center justify-center rounded-md overflow-hidden gap-x-4 bg-base-300 cursor-pointer hover:bg-neutral-300/10 transition p-3'>
-      <div className="relative aspect-square w-full h-full rounded-md overflow-hidden">
+      <div className="relative flex items-center justify-center aspect-square w-full h-full rounded-md overflow-hidden">
         <Image className="object-cover" src={songInfo.picture?.length! > 100 ? 'data:image/jpeg;base64,' + songInfo.picture :  songInfo.picture!} alt='cover' fill />
+        {isLoading && <span className="loading loading-spinner loading text-primary w-20"></span>}
       </div>
       <div className="flex flex-col items-start w-full pt-4 gap-y-1">
         <p className="font-semibold truncate w-full">{songInfo?.title}</p>

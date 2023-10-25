@@ -88,8 +88,9 @@ export default function Home() {
             <Sidebar setMenuOpen={setMenuOpen} setYtSearch={setYtSearch}/>
           </div>
           
-          <div className='w-full bg-base-100'>
-            <div className="grid p-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-4 mt-4">
+          <div className='w-full bg-base-100 flex justify-center'>
+          {(allSong.length===0  && ytSearch?.length===0) && <span className="loading loading-spinner loading text-primary"></span>}
+            <div className="grid p-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-4 mt-4">                            
               {(ytSearch?.length == 0) ?
                 allSong?.map((songInfo, i) => {
                   return <SongItem fromYt={false} songInfo={songInfo} setSongDescription={setSongDescription}  key={i} />
