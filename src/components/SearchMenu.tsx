@@ -6,7 +6,7 @@ import { FaMusic } from 'react-icons/fa'
 import usePlayer from '@/hooks/usePlayer'
 import { IYouTubeVideo } from '@/app/page'
 import UseGetSongByArtistTitle from '@/hooks/useGetSongByArtistTitle'
-import { GET_SONG_YT_URL } from '@/utils/const'
+import { GET_SEARCH_SONG_YT_URL } from '@/utils/const'
 
 interface Props {
     allSong: Song[]
@@ -35,7 +35,7 @@ const SearchMenu = ({ ytSearch, setYtSearch, allSong, setSongDescription, setMen
   }, [allSong, player.audioSong, setMenuOpen])
 
   const findYtSong = async (query: string) =>{
-    const response = await fetch(`${GET_SONG_YT_URL}${query}`)
+    const response = await fetch(`${GET_SEARCH_SONG_YT_URL}${query}`)
     const results: IYouTubeVideo[] = (await response.json()).items
     let searchVideoResult : Song[] = []
     results.map(item => {
