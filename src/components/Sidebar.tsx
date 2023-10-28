@@ -7,12 +7,14 @@ import Box from './Box'
 import SidebarItem from './SidebarItem'
 import Library from './Library'
 import SelectTheme from './selectTheme'
-import { Song } from '../../types'
+import { Song } from '@/interface/song'
+
 
 interface Props {
   setMenuOpen: Dispatch<SetStateAction<boolean>>
   setYtSearch: Dispatch<SetStateAction<Song[] | undefined>>
 }
+
 const Sidebar = ({setMenuOpen,setYtSearch}: Props) => {
   const pathname = usePathname();
   const routes = useMemo(() => [
@@ -44,7 +46,7 @@ const Sidebar = ({setMenuOpen,setYtSearch}: Props) => {
           </div>
         </Box>
         <Box className='overflow-y-auto h-full'>
-          <Library />
+          {/* <Library /> */}
           <SelectTheme />
         </Box>
       </div>

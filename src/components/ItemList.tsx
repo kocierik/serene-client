@@ -1,5 +1,5 @@
 import React from 'react'
-import { Song } from '../../types'
+import { Song } from '@/interface/song'
 import UseGetSongByArtistTitle from '@/hooks/useGetSongByArtistTitle'
 import usePlayer from '@/hooks/usePlayer'
 

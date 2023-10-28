@@ -1,5 +1,6 @@
 "use client";
-import { Song } from "../../types";
+
+import { Song } from '@/interface/song'
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";

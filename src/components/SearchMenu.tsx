@@ -1,10 +1,10 @@
 import { Command } from 'cmdk'
 import React, { Dispatch, SetStateAction, useState, useEffect } from 'react'
-import { Song } from '../../types'
+import { Song } from '@/interface/song'
 import styles from "../styles/raycast.module.scss"
 import { FaMusic } from 'react-icons/fa'
 import usePlayer from '@/hooks/usePlayer'
-import { IYouTubeVideo } from '@/app/page'
+import { IYouTubeVideo } from '@/interface/youtubeVideo'
 import UseGetSongByArtistTitle from '@/hooks/useGetSongByArtistTitle'
 import { GET_SEARCH_SONG_YT_URL } from '@/utils/const'
 
@@ -14,10 +14,9 @@ interface Props {
     setMenuOpen: Dispatch<SetStateAction<boolean>>
     menuOpen: boolean
     setYtSearch: Dispatch<SetStateAction<Song[] | undefined>>
-    ytSearch: Song[]
 }
 
-const SearchMenu = ({ ytSearch, setYtSearch, allSong, setSongDescription, setMenuOpen, menuOpen }: Props) => {
+const SearchMenu = ({ setYtSearch, allSong, setSongDescription, setMenuOpen, menuOpen }: Props) => {
   const [search, setSearch] = useState('')
   const player = usePlayer()
 
@@ -37,6 +36,7 @@ const SearchMenu = ({ ytSearch, setYtSearch, allSong, setSongDescription, setMen
   const findYtSong = async (query: string) =>{
     const response = await fetch(`${GET_SEARCH_SONG_YT_URL}${query}`)
     const results: IYouTubeVideo[] = (await response.json()).items
+    console.log(results)
     let searchVideoResult : Song[] = []
     results.map(item => {
       const value : Song = {
