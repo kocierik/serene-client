@@ -1,11 +1,11 @@
+import { GET_SONG_FROM_TITLE_URL } from "@/utils/const";
+import { sanitizeInput } from "@/utils/sanitizeInput";
 
-export const sanitizeInput = (input: string) => {
-  return input.replace(/[^a-zA-Z0-9 ]+/g, '').replaceAll(' ', '');
-};
+
 
 const UseGetSongByArtistTitle = async (artistTitle: string) => {
     const sanitizedArtistTitle = sanitizeInput(artistTitle);
-    const response = await fetch(`http://localhost:4000/songName/${sanitizedArtistTitle}`)
+    const response = await fetch(`${GET_SONG_FROM_TITLE_URL}${sanitizedArtistTitle}`)
     const bytesAudio = await response.blob()
     const objectURL = URL.createObjectURL(bytesAudio);
     const audioSong = new Audio(objectURL);

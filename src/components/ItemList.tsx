@@ -16,7 +16,7 @@ const ItemList = ({song, setSongDescription, setMenuOpen}: Props) => {
       if (song.id !== player.activeId) {
         player.audioSong?.pause()
         setSongDescription(song)
-        const audioSong = await UseGetSongByArtistTitle(song.artist + song.title)
+        const audioSong = await UseGetSongByArtistTitle(song.title)
         player.setSong(audioSong)
         player.setIds([...player.ids, song])
         player.setIsPlaying(true)

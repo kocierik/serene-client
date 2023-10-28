@@ -4,9 +4,9 @@ import { Song } from '../../types'
 import styles from "../styles/raycast.module.scss"
 import { FaMusic } from 'react-icons/fa'
 import usePlayer from '@/hooks/usePlayer'
-import ItemList from './ItemList'
 import { IYouTubeVideo } from '@/app/page'
 import UseGetSongByArtistTitle from '@/hooks/useGetSongByArtistTitle'
+import { GET_SONG_YT_URL } from '@/utils/const'
 
 interface Props {
     allSong: Song[]
@@ -35,7 +35,7 @@ const SearchMenu = ({ ytSearch, setYtSearch, allSong, setSongDescription, setMen
   }, [allSong, player.audioSong, setMenuOpen])
 
   const findYtSong = async (query: string) =>{
-    const response = await fetch(`http://localhost:4000/search?query=${query}`)
+    const response = await fetch(`${GET_SONG_YT_URL}${query}`)
     const results: IYouTubeVideo[] = (await response.json()).items
     let searchVideoResult : Song[] = []
     results.map(item => {
@@ -51,7 +51,7 @@ const SearchMenu = ({ ytSearch, setYtSearch, allSong, setSongDescription, setMen
     setYtSearch(searchVideoResult)
     setMenuOpen(false)
   }
-  const getSong = async (song: Song) => {
+  const playSong = async (song: Song) => {
     if (song.id !== player.activeId) {
       player.audioSong?.pause()
       setSongDescription(song)
@@ -73,7 +73,7 @@ const SearchMenu = ({ ytSearch, setYtSearch, allSong, setSongDescription, setMen
         <div className='btn hover:bg-base-100 ml-2 mt-1' tabIndex={0} onClick={async () =>await findYtSong(encodeURIComponent(search.replaceAll(' ', '_')))}> Search on Youtube</div>
         <Command.Group heading="Music">
           {allSong.map((song, i) => (
-            <Command.Item key={i} onSelect={async () => await getSong(song)}>
+            <Command.Item key={i} onSelect={async () => await playSong(song)}>
               <FaMusic />
                 {song.artist} {song.title}
             </Command.Item>

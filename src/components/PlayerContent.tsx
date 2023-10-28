@@ -6,11 +6,10 @@ import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
 import Slider from "./Slider";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import usePlayer from "@/hooks/usePlayer";
-import UseGetSongByArtistTitle, {
-  sanitizeInput,
-} from "@/hooks/useGetSongByArtistTitle";
+import UseGetSongByArtistTitle from "@/hooks/useGetSongByArtistTitle";
 import CustomRange from "./CustomRange";
 import { secondsToTime } from "@/utils/secondToTime";
+import { sanitizeInput } from "@/utils/sanitizeInput";
 
 interface Props {
   songDescription: Song | null;
