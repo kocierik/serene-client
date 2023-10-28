@@ -5,42 +5,11 @@ import Sidebar from '@/components/Sidebar'
 import SongItem from '@/components/SongItem'
 import UseGetSongs from '@/hooks/useGetSongs'
 import { useEffect, useCallback, useState, useMemo } from 'react'
-import { Song } from '../../types'
+import { Song } from '@/interface/song'
 import SearchMenu from '@/components/SearchMenu'
 import SidebarItem from '@/components/SidebarItem'
 import { BiHome, BiSearch } from 'react-icons/bi'
 import UseDownloadSong from '@/hooks/useDownloadSong'
-
-export interface IYouTubeVideo {
-  id: {
-    videoId: string;
-  }
-  snippet: {
-    publishedAt: string;
-    channelId: string;
-    title: string;
-    description: string;
-    duration: number;
-  thumbnails: {
-      default: {
-          url: string;
-          width: number;
-          height: number;
-      };
-      medium: {
-          url: string;
-          width: number;
-          height: number;
-      };
-      high: {
-          url: string;
-          width: number;
-          height: number;
-      };
-    };
-  };
-}
-
 
 export default function Home() {
   const [songDescription,setSongDescription] = useState<Song | null>(null)
@@ -83,7 +52,7 @@ export default function Home() {
               return <SidebarItem key={i} {...item} />
             })}
           </div> 
-        <SearchMenu ytSearch={ytSearch!} setYtSearch={setYtSearch} menuOpen={menuOpen} setMenuOpen={setMenuOpen} allSong={allSong} setSongDescription={setSongDescription} />
+        <SearchMenu setYtSearch={setYtSearch} menuOpen={menuOpen} setMenuOpen={setMenuOpen} allSong={allSong} setSongDescription={setSongDescription} />
           <div className='flex flex-1'>
             <Sidebar setMenuOpen={setMenuOpen} setYtSearch={setYtSearch}/>
           </div>
@@ -93,10 +62,10 @@ export default function Home() {
             <div className="grid p-5 grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-4 mt-4">                            
               {(ytSearch?.length == 0) ?
                 allSong?.map((songInfo, i) => {
-                  return <SongItem fromYt={false} songInfo={songInfo} setSongDescription={setSongDescription}  key={i} />
+                  return songInfo.duration! > 0 && <SongItem fromYt={false} songInfo={songInfo} setSongDescription={setSongDescription}  key={i} />
                 }) :
                 ytSearch?.map((item,i) =>{
-                  return <SongItem fromYt={true} songInfo={item} setSongDescription={setSongDescription}  key={i} />
+                  return item.duration! > 0 && <SongItem fromYt={true} songInfo={item} setSongDescription={setSongDescription}  key={i} />
                 })
               }
             </div>
