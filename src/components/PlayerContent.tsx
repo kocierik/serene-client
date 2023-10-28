@@ -30,11 +30,15 @@ const PlayerContent = ({
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
   
   const onPlayNext = async () => {
-    if (player.activeId >= player.ids.length) {
+    console.log(player.ids)
+    console.log(player.activeId)
+    if (player.activeId + 1 >= player.ids.length) {
       const randomIndexSong = Math.floor(Math.random() * allSong.length);
       player.audioSong?.pause();
+      console.log("next song --> ", allSong[randomIndexSong])
+      
       const nextSong = await UseGetSongByArtistTitle(
-        allSong[randomIndexSong].artist + allSong[randomIndexSong].title
+        allSong[randomIndexSong].title
       );
       player.setSong(nextSong);
       setSongDescription(allSong[randomIndexSong]);
@@ -44,9 +48,9 @@ const PlayerContent = ({
     } else {
       player.audioSong?.pause();
       const nextSong = await UseGetSongByArtistTitle(
-        player.ids[player.activeId + 1].artist +
           player.ids[player.activeId + 1].title
       );
+      console.log("next song: ", nextSong)
       player.setSong(nextSong);
       setSongDescription(player.ids[player.activeId + 1]);
       player.setId(player.activeId + 1);
@@ -62,7 +66,7 @@ const PlayerContent = ({
     player.setId(index);
     player.audioSong?.pause();
     const safeInput = sanitizeInput(
-      player.ids[index].artist + player.ids[index].title
+      player.ids[index].title
     );
     const prevSong = await UseGetSongByArtistTitle(safeInput);
     prevSong.play();
