@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 const Box: React.FC<Props> = ({ children, className }) => {
   return (
     <div className={twMerge(`bg-base-300 rounded-lg h-fit w-full`, className)}>{children}</div> //used template strings so we can pass stylings in as classnames
-  )
-}
+  );
+};
 
-export default Box
+export default Box;

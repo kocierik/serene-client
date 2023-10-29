@@ -1,10 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 function Home() {
-  return (
-    <div className='flex flex-1 bg-base-200'>
-    </div>
-  )
+  return <div className="flex flex-1 bg-base-200"></div>;
 }
 
-export default Home
+export default Home;

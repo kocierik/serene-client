@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { Song } from '@/interface/song'
-import { BsPauseFill, BsPlayFill } from "react-icons/bs";
-import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
-import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
-import Slider from "./Slider";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import usePlayer from "@/hooks/usePlayer";
-import UseGetSongByArtistTitle from "@/hooks/useGetSongByArtistTitle";
-import CustomRange from "./CustomRange";
-import { secondsToTime } from "@/utils/secondToTime";
-import { sanitizeInput } from "@/utils/sanitizeInput";
+import { Song } from '@/interface/song';
+import { BsPauseFill, BsPlayFill } from 'react-icons/bs';
+import { AiFillStepBackward, AiFillStepForward } from 'react-icons/ai';
+import { HiSpeakerWave, HiSpeakerXMark } from 'react-icons/hi2';
+import Slider from './Slider';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import usePlayer from '@/hooks/usePlayer';
+import UseGetSongByArtistTitle from '@/hooks/useGetSongByArtistTitle';
+import CustomRange from './CustomRange';
+import { secondsToTime } from '@/utils/secondToTime';
+import { sanitizeInput } from '@/utils/sanitizeInput';
 
 interface Props {
   songDescription: Song | null;
@@ -18,28 +18,22 @@ interface Props {
   setSongDescription: Dispatch<SetStateAction<Song | null>>;
 }
 
-const PlayerContent = ({
-  songDescription,
-  setSongDescription,
-  allSong,
-}: Props) => {
+const PlayerContent = ({ songDescription, setSongDescription, allSong }: Props) => {
   const player = usePlayer();
   const [durationStatus, setDurationStatus] = useState(0);
   const [volume, setVolume] = useState(1);
   const Icon = player.isPlaying ? BsPauseFill : BsPlayFill;
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
-  
+
   const onPlayNext = async () => {
-    console.log(player.ids)
-    console.log(player.activeId)
+    console.log(player.ids);
+    console.log(player.activeId);
     if (player.activeId + 1 >= player.ids.length) {
       const randomIndexSong = Math.floor(Math.random() * allSong.length);
       player.audioSong?.pause();
-      console.log("next song --> ", allSong[randomIndexSong])
-      
-      const nextSong = await UseGetSongByArtistTitle(
-        allSong[randomIndexSong].title
-      );
+      console.log('next song --> ', allSong[randomIndexSong]);
+
+      const nextSong = await UseGetSongByArtistTitle(allSong[randomIndexSong].title);
       player.setSong(nextSong);
       setSongDescription(allSong[randomIndexSong]);
       player.setIds([...player.ids, allSong[randomIndexSong]]);
@@ -47,10 +41,8 @@ const PlayerContent = ({
       nextSong?.play();
     } else {
       player.audioSong?.pause();
-      const nextSong = await UseGetSongByArtistTitle(
-          player.ids[player.activeId + 1].title
-      );
-      console.log("next song: ", nextSong)
+      const nextSong = await UseGetSongByArtistTitle(player.ids[player.activeId + 1].title);
+      console.log('next song: ', nextSong);
       player.setSong(nextSong);
       setSongDescription(player.ids[player.activeId + 1]);
       player.setId(player.activeId + 1);
@@ -59,15 +51,13 @@ const PlayerContent = ({
   };
 
   const onPlayPrev = async () => {
-    let index = player.activeId - 1;
+    const index = player.activeId - 1;
     if (index < 0) {
       return;
     }
     player.setId(index);
     player.audioSong?.pause();
-    const safeInput = sanitizeInput(
-      player.ids[index].title
-    );
+    const safeInput = sanitizeInput(player.ids[index].title);
     const prevSong = await UseGetSongByArtistTitle(safeInput);
     prevSong.play();
     player.setSong(prevSong);
@@ -120,7 +110,7 @@ const PlayerContent = ({
         </div>
       </div>
       <div className="flex md:hidden flex-col col-auto w-full justify-end items-center">
-        {" "}
+        {' '}
         {/*mobile play pause button*/}
         <div className="flex flex-1">
           <div onClick={onPlayPrev} className="mr-1">
@@ -141,26 +131,25 @@ const PlayerContent = ({
               className="text-neutral-400 cursor-pointer hover:text-white transition"
             />
           </div>
-          
         </div>
         <div className="flex flex-1 w-full items-center gap-3">
           <div className="flex text-[0.688rem] text-white text-opacity-70">
             {secondsToTime(durationStatus)}
           </div>
-            <CustomRange
-              step={0.1}
-              min={0}
-              max={1}
-              value={durationStatus}
-              onChange={(value: number) => {
-                if (player.audioSong) {
-                  player.audioSong.currentTime = value;
-                }
-              }}
-            />
-            <div className="flex text-[0.688rem] text-white text-opacity-70">
-                {secondsToTime(songDescription?.duration)}
-            </div>
+          <CustomRange
+            step={0.1}
+            min={0}
+            max={1}
+            value={durationStatus}
+            onChange={(value: number) => {
+              if (player.audioSong) {
+                player.audioSong.currentTime = value;
+              }
+            }}
+          />
+          <div className="flex text-[0.688rem] text-white text-opacity-70">
+            {secondsToTime(songDescription?.duration)}
+          </div>
         </div>
       </div>
 
@@ -189,30 +178,26 @@ const PlayerContent = ({
           <div className="flex text-[0.688rem] text-success text-opacity-70">
             {secondsToTime(durationStatus)}
           </div>
-            <CustomRange
-              step={0.1}
-              min={0}
-              max={songDescription?.duration || 1}
-              value={durationStatus}
-              onChange={(value: number) => {
-                if (player.audioSong) {
-                  player.audioSong.currentTime = value;
-                }
-              }}
-            />
-            <div className="flex text-[0.688rem] text-success text-opacity-70">
-                {secondsToTime(songDescription?.duration)}
-            </div>
+          <CustomRange
+            step={0.1}
+            min={0}
+            max={songDescription?.duration || 1}
+            value={durationStatus}
+            onChange={(value: number) => {
+              if (player.audioSong) {
+                player.audioSong.currentTime = value;
+              }
+            }}
+          />
+          <div className="flex text-[0.688rem] text-success text-opacity-70">
+            {secondsToTime(songDescription?.duration)}
+          </div>
         </div>
       </div>
 
       <div className="hidden md:flex w-full justify-end pr-2">
         <div className="flex items-center gap-x-2 w-[120px]">
-          <VolumeIcon
-            onClick={toggleMute}
-            className="cursor-pointer"
-            size={34}
-          />
+          <VolumeIcon onClick={toggleMute} className="cursor-pointer" size={34} />
           <Slider value={volume} onChange={(value) => setVolume(value)} />
         </div>
       </div>

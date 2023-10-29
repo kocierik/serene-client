@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "npx eslint .",
+    "format": "npx prettier --write ."
   },
   "dependencies": {
     "@radix-ui/react-slider": "^1.1.2",
@@ -29,11 +30,17 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "@typescript-eslint/parser": "^6.9.0",
     "autoprefixer": "^10",
     "daisyui": "^3.9.2",
-    "eslint": "^8",
+    "eslint": "^8.51.0",
     "eslint-config-next": "13.5.4",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-react": "^7.33.2",
     "postcss": "^8",
+    "prettier": "^3.0.3",
     "tailwindcss": "^3",
     "tailwindcss-cmdk": "^0.0.3",
     "typescript": "^5"
