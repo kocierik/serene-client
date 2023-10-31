@@ -14,8 +14,12 @@ pnpm dev
 ```
 
 
-<img src="https://github.com/kocierik/swiftClient/assets/41591336/5df44af7-4f71-46e5-bf51-fe7d3da90712" alt="App Screenshot" height="300" width="700">
-<img src="https://github.com/kocierik/swiftClient/assets/41591336/4a73c2cb-6655-4696-896f-5acbc407323f" alt="App Screenshot" height="300" width="700">
+<img src="https://github.com/kocierik/serene-client/assets/41591336/e72b67be-9040-4cf7-a435-96e400c9bb37" alt="App Screenshot" height="300" width="700">
+
+<br>
+<br>
+
+<img src="https://github.com/kocierik/serene-client/assets/41591336/7d8bd8f6-c7b1-49aa-9d11-47288f0a5ee8" alt="App Screenshot" height="300" width="700">
 
 ### Run with Docker compose
 
